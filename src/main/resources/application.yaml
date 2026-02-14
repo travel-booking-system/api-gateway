@@ -13,3 +13,7 @@ management:
     web:
       exposure:
         include: health,info,metrics
+
+services:
+  auth: http://auth-service:8081
+  user: http://user-service:8082
