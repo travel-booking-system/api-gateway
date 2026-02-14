@@ -1,5 +1,6 @@
 package com.travel.api_gateway.config;
 
+import com.travel.api_gateway.common.GatewayConstants;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -7,27 +8,28 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GatewayRoutesConfig {
-    private final ServiceUrlConfig serviceUrlConfig;
+    private final GatewayProperties gatewayProperties;
 
-    public GatewayRoutesConfig(ServiceUrlConfig serviceUrlConfig){
-        this.serviceUrlConfig = serviceUrlConfig;
+    public GatewayRoutesConfig(GatewayProperties gatewayProperties){
+        this.gatewayProperties = gatewayProperties;
     }
 
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("auth-service", r -> r
-                        .path("/api/auth/**")
-                        .filters(f -> f.stripPrefix(2))
-                        .uri(serviceUrlConfig.auth())
-                )
-                .route("user-service", r -> r
-                        .path("/api/users/**")
+                .route(GatewayConstants.AUTH_SERVICE, r -> r
+                        .path(gatewayProperties.auth().path())
                         .filters(f -> f
-                                .stripPrefix(2)
+                                .stripPrefix(gatewayProperties.auth().strip()))
+                        .uri(gatewayProperties.auth().uri())
+                )
+                .route(GatewayConstants.USER_SERVICE, r -> r
+                        .path(gatewayProperties.user().path())
+                        .filters(f -> f
+                                .stripPrefix(gatewayProperties.user().strip())
 
                         )
-                        .uri(serviceUrlConfig.user())
+                        .uri(gatewayProperties.user().uri())
                 )
                 .build();
     }

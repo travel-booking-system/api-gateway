@@ -15,5 +15,11 @@ management:
         include: health,info,metrics
 
 services:
-  auth: http://auth-service:8081
-  user: http://user-service:8082
+  auth:
+    uri: http://auth-service:8081
+    path: "/api/auth/**"
+    strip: 2
+  user:
+    uri: http://user-service:8082
+    path: "/api/users/**"
+    strip: 2
