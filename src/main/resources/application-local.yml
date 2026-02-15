@@ -1,0 +1,9 @@
+services:
+  auth:
+    uri: http://localhost:8081
+    path: "/api/auth/**"
+    strip: 2
+  user:
+    uri: http://localhost:8082
+    path: "/api/users/**"
+    strip: 2
