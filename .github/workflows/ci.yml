@@ -25,4 +25,4 @@ jobs:
         run: mvn clean verify
         
       - name: Build Docker image
-        run: docker build -t api-gateway .  
+        run: docker build -t api-gateway:${{ github.sha }} . 
